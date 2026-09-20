@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#191816" />
+    <meta name="description" content="Shotline 分镜制作：从故事节拍到镜头目的、切镜逻辑与 AI 视频提示词。免费体验可编辑的分镜原型。" />
+    <meta property="og:title" content="Shotline 分镜制作" />
+    <meta property="og:description" content="让每个镜头都有叙事理由。故事工作流、分镜检查表与交互原型。" />
+    <title>Shotline 分镜制作 · 交互原型</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#">Shotline<span> / 分镜制作</span></a>
+        <div class="project-meta">
+          <span>项目</span>
+          <strong>长安 · 离城</strong>
+        </div>
+        <div class="top-actions">
+          <div class="skill-state"><i></i> 示例原型 · 无模型调用</div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="scene-panel">
+          <div class="panel-title">
+            <span>01</span>
+            <div><strong>输入场景</strong><small>从场景开始，不从镜头开始</small></div>
+          </div>
+
+          <label class="field-label" for="sceneInput">场景</label>
+          <textarea id="sceneInput" readonly aria-describedby="demoNotice">清晨，李善德确认自己接下的是从岭南转运鲜荔枝的绝命差事。他在家中收拾简单行装，与妻女无言告别，随后牵着瘦马穿过长安城门，独自踏上南下的长路。</textarea>
+
+          <p id="demoNotice" class="demo-notice">固定场景演示：可调整镜头、顺序和提示词；不会分析新场景或生成视频。<a href="https://github.com/libuyi543-lang/Shotline">查看方法与源码 ↗</a></p>
+          <div class="scene-brief">
+            <div><span>人物想要什么</span><p>李善德想保住家人，也想从不可能的差事中活下来。</p></div>
+            <div><span>场景发生什么变化</span><p>被迫接受任务，转变为真正踏出长安。</p></div>
+            <div><span>观众应该感受到什么</span><p>一个小人物被庞大制度推上漫长道路。</p></div>
+          </div>
+
+          <div class="setting-grid">
+            <label><span>目标时长</span><select id="duration"><option>20 秒</option><option selected>30 秒</option><option>45 秒</option></select></label>
+            <label><span>画面比例</span><select id="aspect"><option selected>2.39:1</option><option>16:9</option><option>9:16</option></select></label>
+            <label class="full"><span>画面风格</span><select id="visual"><option selected>石墨分镜稿</option><option>电影关键帧</option><option>水墨分镜稿</option></select></label>
+          </div>
+
+          <button class="generate-button" id="generateButton">
+            <span>载入示例主镜</span>
+            <kbd>⌘ ↵</kbd>
+          </button>
+        </aside>
+
+        <section class="board-panel">
+          <div class="board-header">
+            <div class="panel-title compact">
+              <span>02</span>
+              <div><strong>镜头序列</strong><small id="sequenceSummary">4 个节拍 · 4 个主镜 · 30 秒</small></div>
+            </div>
+            <button class="copy-all-button" id="exportShots">导出 JSON</button>
+            <button class="copy-all-button" id="copyAllPrompts">复制全部提示词</button>
+          </div>
+
+          <div class="beat-rail">
+            <span class="active">家庭牵挂</span><i></i><span>做出决定</span><i></i><span>离开长安</span><i></i><span>无法回头</span>
+          </div>
+
+          <div class="shot-grid" id="shotGrid"></div>
+          <div class="empty-board" id="emptyBoard" hidden>
+            <strong>没有镜头</strong><span>点击“载入示例主镜”恢复镜头。</span>
+          </div>
+
+          <div class="sequence-tools">
+            <button id="moveLeft">← 前移</button>
+            <button id="moveRight">后移 →</button>
+            <button id="regenerateShot">重置此镜</button>
+            <button id="deleteShot" class="danger">删除此镜</button>
+          </div>
+        </section>
+
+        <aside class="inspector-panel">
+          <div class="panel-title compact">
+            <span>03</span>
+            <div><strong>镜头检查器</strong><small id="inspectorNumber">镜头 01 / 已选择</small></div>
+          </div>
+
+          <div class="inspector-scroll">
+            <div class="shot-purpose">
+              <span>镜头目的</span>
+              <h2 id="purpose"></h2>
+            </div>
+
+            <dl class="shot-specs">
+              <div><dt>情节拍</dt><dd id="beat"></dd></div>
+              <div><dt>观众视点</dt><dd><select id="viewpoint"><option>跟随李善德</option><option>客观视点</option><option>跟随家人</option></select></dd></div>
+              <div><dt>景别 / 焦段</dt><dd><select id="framing"><option>中远景 · 35mm</option><option>特写 · 65mm</option><option>大全景 · 28mm</option><option>极远景 · 35mm</option></select></dd></div>
+              <div><dt>机位高度</dt><dd id="angle"></dd></div>
+              <div><dt>镜头运动</dt><dd><select id="movement"><option>固定镜头</option><option>轻微推进</option><option>缓慢前移</option></select></dd></div>
+              <div><dt>镜头时长</dt><dd><input id="shotDuration" type="text" inputmode="decimal" /></dd></div>
+            </dl>
+
+            <section class="logic-block">
+              <span>构图与第一焦点</span>
+              <p id="composition"></p>
+            </section>
+            <section class="logic-block">
+              <span>切镜逻辑</span>
+              <p id="cutLogic"></p>
+            </section>
+
+            <section class="prompt-block">
+              <div><span>AI 视频提示词</span><button id="copyPrompt">复制</button></div>
+              <textarea id="videoPrompt"></textarea>
+            </section>
+          </div>
+
+          <div class="quality-gate">
+            <div><span>场景功能</span><strong>待人工检查</strong></div>
+            <div><span>观众视点</span><strong>待人工检查</strong></div>
+            <div><span>切镜逻辑</span><strong>待人工检查</strong></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status">提示词已复制</div>
+    <script src="./app.js"></script>
+  </body>
+</html>

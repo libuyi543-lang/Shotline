@@ -1,0 +1,22 @@
+name: 问题与体验反馈
+description: 提供可复现的操作或场景
+title: "[反馈] "
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: 你想完成什么任务？
+      description: 请注明使用的页面、文件或命令；不要上传密钥和私人数据。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 操作步骤、实际结果与预期结果
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境或补充证据
+      description: 浏览器、系统、Python/Node 版本、脱敏后的错误信息。
