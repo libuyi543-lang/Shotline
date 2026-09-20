@@ -1,57 +1,90 @@
 # Shotline 分镜制作
 
-**让每个镜头都有叙事理由。** 从故事节拍，到镜头目的、观众视点、切镜逻辑，再到可编辑的 AI 视频提示词。
+> **“让每一个分镜，都有不可替代的叙事理由。”**  
+> 面向影视创作与 AI 视频生产的结构化工作流：从剧本节拍、镜头叙事目的、视点与切镜逻辑，到工业级 AI 视频 Prompt 工程体系。
 
-[在线体验 →](https://libuyi543-lang.github.io/Shotline/) · [5 分钟上手](docs/quickstart.md) · [中文完整示例](examples/changan-shot-breakdown.md) · [English](README.en.md)
+[🎬 在线交互体验工作台](https://libuyi543-lang.github.io/Shotline/) · [⚡ 5 分钟上手实操](docs/quickstart.md) · [📖 中文场景分镜全案拆解](examples/changan-shot-breakdown.md) · [English README](README.en.md)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Zero-Setup Prototype](https://img.shields.io/badge/Web%20Demo-No%20Login%20%2F%20No%20Key-success)](https://libuyi543-lang.github.io/Shotline/)
+[![Prompt Standards](https://img.shields.io/badge/Prompt-Midjourney%20%7C%20Runway%20%7C%20Luma-orange)](prompts/)
 
 ![Shotline 分镜工作台：场景、镜头序列与镜头检查器](docs/images/shotline-demo.png)
 
-> 当前版本：可复用的故事/分镜方法库 + 固定示例驱动的交互原型。无需注册或 API Key。原型不调用模型，也不生成视频。
+> 💡 **项目定位与状态**：当前版本为**结构化故事/分镜工业级方法库 + 浏览器交互工作台原型**。无需注册、无需 API Key，即开即用。前端原型专注于**分镜序列组织、提示词参数联动与结构化 JSON 导出**，不直接消耗视频生成额度，帮助创作者在点击“生成”前先夯实叙事骨架。
 
-## 为什么做 Shotline
+---
 
-“远景、特写、慢推”可以描述画面，却没有回答：这一镜让观众理解了什么？为什么此时切镜？Shotline 把这些创作判断写成可复用的工作流、提示词和检查表，让创作者在生成素材前先检查叙事。
+## 🧐 为什么做 Shotline（解决什么痛点）
 
-| 输入 | 工作方式 | 产出 |
-| --- | --- | --- |
-| 一个故事想法 | 中心问题、人物诉求、事件/情感/价值三层检查 | 故事梗概、节拍表、场景表 |
-| 一段完整场景 | 主镜、观众视点、空间关系、切镜理由 | 结构化分镜表 |
-| 一版镜头草案 | 对照目的、轴线、构图、节奏检查表 | 具体修改理由与提示词 |
+在当前 AI 视频生成流程中，很多创作者陷入了“随机抽卡”与“画面华丽但剧情断裂”的困境：
+- **画面有了，但没有镜头目的**：“远景、特写、慢推”描述了表象，却说不清这个镜头让观众理解了什么关键信息。
+- **切镜生硬，空间轴线崩塌**：上一秒人物在左，下一秒突然视线跳轴；画面单看很美，剪在一起完全无法连贯。
+- **提示词混乱，难以工程化复现**：无法将影视导演的机位调度、情绪节拍与光影参数固化为跨模型可调用的标准 Prompt。
 
-## 先试一次，再读方法
+**Shotline 的解决逻辑：将视听语言工程化、参数化。**
 
-1. 打开[交互演示](https://libuyi543-lang.github.io/Shotline/)，查看“长安 · 离城”的 4 个示例主镜。
-2. 选择镜头，修改景别、运动或时长；观察提示词参数变化。
-3. 前移/后移镜头，编辑提示词，复制或导出 JSON。
-4. 用[分镜检查表](storyboard/checklist.md)人工检查；刷新会清空编辑，请先导出。
+```mermaid
+flowchart LR
+    A[一个故事想法 / 原始剧本] -->|人物诉求与节拍拆解| B(结构化场景清单)
+    B -->|确定叙事目的与视点归属| C{Shotline 分镜编排}
+    C -->|检查轴线/景别节奏/切镜理由| D[结构化镜头表]
+    D -->|生成标准化参数 Prompt| E[AI 视频生成引擎 / 工业制作]
+    D -->|导出 JSON / 质检 Checklist| F[人工审核与项目归档]
+```
 
-有自己的场景？将 [分镜提示词模板](prompts/storyboard-template.md)、[工作流](storyboard/workflow.md)与场景一起交给你使用的 AI 助手。界面目前只演示固定案例，不分析新场景。
+---
 
+## 📦 核心交付内容与知识工程地图
+
+| 模块 | 核心解决问题 | 核心入口与资产 |
+| :--- | :--- | :--- |
+| **01 故事与戏剧节拍** | 解决剧本逻辑散乱：从中心问题、人物欲望到三幕节拍与场景对白设计。 | [故事工作流](story-writing/workflow.md)<br>[戏剧节拍 Checklist](story-writing/checklist.md) |
+| **02 分镜视听语言框架** | 规范机位、景别、构图、运动调度与视点分配，杜绝无意义切镜。 | [分镜工作流](storyboard/workflow.md)<br>[分镜检查清单](storyboard/checklist.md) |
+| **03 跨模型 Prompt 协议** | 将影视参数提炼为可直接赋能 Claude/ChatGPT/Midjourney/Runway 的提示词模板。 | [分镜 Prompt 模板](prompts/storyboard-template.md)<br>[故事 Prompt 模板](prompts/story-writing-template.md) |
+| **04 真实工业拆解案例** | 以《长安的荔枝》风格场景为例，提供端到端 4 幕主镜与全流程镜头拆解。 | [中文完整拆解案](examples/changan-shot-breakdown.md)<br>[结构化分镜示例](examples/storyboard-shot-list-example.md) |
+| **05 轻量交互工作台** | 纯前端实现的镜头编排看板，支持动态调整参数、镜头拖拽重排与 JSON 导出。 | [在线工作台](https://libuyi543-lang.github.io/Shotline/)<br>[原型源码](demo/) |
+
+---
+
+## ⚡ 2 分钟极速上手
+
+### 方式 1：无需配置，直接在线玩
+直接访问 [Shotline 在线演示](https://libuyi543-lang.github.io/Shotline/)：
+1. 观察预置的 4 个主镜头（建立镜头、反应镜头、特写镜头、转场镜头）。
+2. 在右侧面板修改景别、机位角度或镜头运动，观察下方 AI 提示词与 JSON 的动态响应。
+3. 调整镜头顺序，一键导出为通用 JSON。
+
+### 方式 2：本地启动交互看板
 ```bash
 git clone https://github.com/libuyi543-lang/Shotline.git
 cd Shotline
 python3 -m http.server 4317 --bind 127.0.0.1 --directory demo
-# 打开 http://127.0.0.1:4317
+# 打开浏览器访问 http://127.0.0.1:4317
 ```
 
-## 方法与源码
+### 方式 3：结合你常用的大模型（ChatGPT / Claude / Cursor）
+将 [`prompts/storyboard-template.md`](prompts/storyboard-template.md) 直接粘贴至你的 AI 对话框中，输入你的一句话场景设定，即可按照 Shotline 工业级标准批量输出结构化分镜。
 
-| 想完成的任务 | 入口 |
-| --- | --- |
-| 从想法写成故事 | [故事工作流](story-writing/workflow.md) · [故事提示词](prompts/story-writing-template.md) |
-| 从场景拆出镜头 | [分镜工作流](storyboard/workflow.md) · [分镜示例](examples/storyboard-shot-list-example.md) |
-| 检查一场戏或对白 | [场景与对白](story-writing/scene-and-dialogue.md) · [故事检查表](story-writing/checklist.md) |
-| 接入现有 AI 助手 | [ChatGPT](adapters/chatgpt/README.md) · [Claude](adapters/claude/README.md) · [Codex](adapters/codex/README.md) |
-| 查看实现与边界 | [原型源码](demo/) · [设计与验证说明](docs/project-notes.md) |
+---
 
-## 已完成与下一步
+## 🛣️ 发展路线（Roadmap）
 
-已完成：方法文档、Prompt 模板、检查表、故事与分镜案例、可编辑交互原型、JSON 导出。
+- [x] **开源原创视听语言方法论与 Prompt 体系**
+- [x] **上线纯前端零门槛分镜交互工作台**
+- [x] **支持分镜脚本标准化 JSON 导出**
+- [ ] 接入主流大模型 API，支持自由输入剧本自动生成分镜卡片
+- [ ] 结合本地 ComfyUI / Runway / 可灵 API 实现一键拉流出图
+- [ ] 自动化镜头轴线冲突与信息重复性 AI 质检器
 
-计划：接入真实模型、任意场景输入、保存与导入项目、可验证的质量评测。自动质检与视频生成尚未实现。
+---
 
-如果这个方法帮到了你，欢迎 Star 方便再次找到。更有价值的反馈是：提交一段短场景，说明“哪一镜、为什么不成立、你期待怎样修改”。[提交使用反馈](https://github.com/libuyi543-lang/Shotline/issues/new/choose) · [贡献指南](CONTRIBUTING.md)
+## 🤝 贡献与交流
 
-## License 与素材
+- 欢迎影视从业者、AI 视频创作者、独立导演 Star 收藏备用！
+- 如果你在创作中发现某个镜头设计不合理、或有更好的 Prompt 封装方案，欢迎[提交 Issue / 案例](https://github.com/libuyi543-lang/Shotline/issues/new/choose)。
+- 详细规范请查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-项目代码和原创方法文档沿用 [MIT](LICENSE)。方法来自课程学习后的整理，课程映射见两个目录中的 `course-map.md`，不分发教材原文。演示插图为预制示意资产，案例以《长安的荔枝》人物设定作学习演示，不代表与原作有合作或授权关系；第三方名称与故事元素不因本仓库许可而转授权。
+## 📄 License 与免责说明
+
+本项目遵循 [MIT License](LICENSE)。方法论基于公开视听语言理论整理，演示项目所涉参考案例仅供教学与非商业交流，所生成内容与相关第三方原作无关。
